@@ -1,50 +1,39 @@
-# Project 5: Brevet time calculator with Ajax and MongoDB
+# Project 5: Brevet Time Calculator with AJAX and MongoDB
 
-Simple list of controle times from project 4 stored in MongoDB database.
+Author: Aaliyah Franklin
 
-## What is in this repository
+Email:  aaliyahf@uoregon.edu
 
-You have a minimal implementation of Docker compose in DockerMongo folder, using which you can connect the flask app to MongoDB (as demonstrated in class). Refer to the lecture slide `05a-Table-driven.pdf` and `05b-Docker-Compose.pdf`. You'll also need MongoCommands.txt. Solved acp_times.py file is in Canvas! 
+## What it does
 
-## Functionality you'll add
+A Flask web app that calculates the open and close times for the control
+points of an ACP brevet. You choose the brevet distance and start time, then
+type a control distance. The open and close times fill in automatically using
+Ajax, with no page reload. 
 
-You will reuse *your* code from project 4 (https://bitbucket.org/UOCIS322/proj4-brevets/). Recall: you created a list of open and close controle times using AJAX. In this project, you will create the following functionalities.
 
-1. Create two buttons "Submit" and "Display" in the page where have controle times.
-2. On clicking the Submit button, the control times should be entered into the database.
-3. On clicking the Display button, the entries from the database should be displayed in a new page.
+## Buttons
 
-Handle error cases appropriately. For example, Submit should return an error if there are no controle times. One can imagine many such cases: you'll come up with as many cases as possible.
+- **Submit:** Saves every row with a km value to MongoDB,
+  if the table is empty, it shows an error.
+- **Display:** Navigates to a new page and loads saved rows,
+  if nothing is saved, it shows an error.
 
-## Tasks
+## Rules
 
-* Submit a working application.
-* A README.md file that includes not only identifying information (your name) but but also a revised, clear specification 
-  of the brevet controle time calculation rules.
-* Dockerfile
-* Test cases for the two buttons. No need to run nose.
-* docker-compose.yml
+Each part of the control distance is charged at the speed for its range, and
+the times are added up and rounded to the nearest minute. Open time uses the
+max speed and close time uses the min speed.
 
-### You'll turn in your credentials.ini from which we will get the following:
+| Range (km)  | Min speed | Max speed |
+|-------------|-----------|-----------|
+| 0 - 200     | 15        | 34        |
+| 200 - 400   | 15        | 32        |
+| 400 - 600   | 15        | 30        |
+| 600 - 1000  | 11.428    | 28        |
+| 1000 - 1300 | 13.333    | 26        |
 
-* `author`
-* `repo`
-
-All must be under the section `[DEFAULT]`.
-
-## Grading Rubric
-
-* If your code works as expected: 100 points. This includes:
-	* AJAX in the frontend. That is, open and close times are automatically populated, 
-	* Frontend to backend interaction (with correct requests/responses), 
-	* README is updated with your name and email.
-* If the AJAX logic is not working, 10 points will be docked off. 
-* If the README is not clear or missing, up to 15 points will be docked off. 
-* If the two test cases fail, up to 15 points will be docked off.
-* If the logic to enter into or retrieve from the database is wrong, 30 points will be docked off.
-* If none of the functionalities work, 30 points will be given assuming 
-    * The credentials.ini is submitted with the correct URL of your repo, and
-    * Dockerfile is present 
-    * Docker-compose.yml works/builds without any errors
-* If the Docker-compose.yml doesn't build or is missing, 10 points will be docked off.
-* If credentials.ini is missing, 0 will be assigned.
+- A control past the brevet distance is treated as the brevet distance.
+- A 200 km finish closes at 13:30, and a 400 km finish at 27:00.
+- Controls under 60 km close at distance / 20 + 1 hour.
+- The start (0 km) opens at 0:00 and closes at 1:00.

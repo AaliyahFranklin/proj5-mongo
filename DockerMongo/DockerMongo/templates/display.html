@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Saved Control Times</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+  <h1>Saved Control Times</h1>
+  <p id="message"></p>
+  <table id="times">
+    <tr><th>Km</th><th>Location</th><th>Open</th><th>Close</th></tr>
+  </table>
+
+  <script>
+    $.getJSON("/fetch", function(data) {
+      if (data.error) {
+        $("#message").text(data.error);
+        return;
+      }
+      $.each(data.result, function(i, row){
+       $("#times").append(
+        "<tr>" +
+        "<td>" + row.km + "</td>" +
+        "<td>" + row.location + "</td>" +
+        "<td>" + row.open + "</td>" +
+        "<td>" + row.close + "</td>"+       
+        "</tr>"
+        );
+      })
+    });
+  </script>
+</body>
+</html>
